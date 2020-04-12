@@ -17,7 +17,7 @@ board
     // Turn all leds off.
     const allOff = () => {
       leds.green.stop().off();
-      leds.yellow.stop().stop().off();
+      leds.yellow.stop().off();
       leds.red.stop().off();
     };
     // Turn on red.
