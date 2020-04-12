@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { Board, Led } = require("johnny-five");
 
 const board = new Board();
