@@ -4,9 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "concurrently \"cd packages/server && yarn start\" \"cd packages/client && yarn start\""
   },
   "dependencies": {
-    "johnny-five": "^1.4.0"
-  }
+    "concurrently": "^5.1.0"
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
 }
