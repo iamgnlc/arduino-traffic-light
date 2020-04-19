@@ -10,7 +10,6 @@ const ADDRESS = process.env.ADDRESS;
 const PORT = process.env.PORT;
 
 const TrafficLight = require("./TrafficLight");
-const logo = require("./logo");
 
 const transition = 1500;
 const blink = 500;
