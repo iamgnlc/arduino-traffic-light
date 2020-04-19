@@ -86,7 +86,7 @@ board.on("ready", () => {
 
   app.listen(PORT, ADDRESS, () => {
     // Turn the server on.
-    console.log(logo);
+    console.log("Arduino Traffic Light".yellow);
     console.log(`Server running at http://${ADDRESS}:${PORT}/`.green);
   });
 });
