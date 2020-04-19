@@ -15,6 +15,7 @@ import {
   SET_COLORS,
   SET_INFO,
   SET_PROCESSING,
+  SET_LENGTH_VALUE,
   SET_BLINK_VALUE,
   SET_TRANSITION_VALUE,
 } from "./actions.js";
@@ -29,6 +30,7 @@ const initialState = {
   green: "off",
   blink: "",
   transition: "",
+  length: 5000,
 };
 
 const baseUrl = process.env.REACT_APP_SERVER_URL;
@@ -48,6 +50,10 @@ const fetchUrl = (url) => {
 
 const Control = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const setLength = (value) => {
+    dispatch({ type: SET_LENGTH_VALUE, value });
+  };
 
   const setBlink = async (value) => {
     const url = baseUrl + "/set/blink/" + value;
@@ -90,14 +96,14 @@ const Control = () => {
   const init = useCallback(async () => {
     const url = baseUrl + "/info";
     const result = await fetchUrl(url);
-    dispatch({ type: SET_INFO, result });
     dispatch({ type: SET_COLORS, result });
+    dispatch({ type: SET_INFO, result });
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       toggle();
-    }, state.transition);
+    }, state.length);
     return () => clearInterval(interval);
   });
 
@@ -158,14 +164,21 @@ const Control = () => {
                       Standby
                     </Button>
                   </Col>
-                  <Col xs={12} lg={6} className="mb-3">
+                  <Col xs={12} lg={4} className="mb-3">
                     <Form
-                      label="Stop/Go transition"
+                      label="Stop/Go length"
+                      callback={setLength}
+                      value={Number(state.length)}
+                    />
+                  </Col>
+                  <Col xs={12} lg={4} className="mb-3">
+                    <Form
+                      label="Yellow transition"
                       callback={setTransition}
                       value={Number(state.transition)}
                     />
                   </Col>
-                  <Col xs={12} lg={6} className="mb-3">
+                  <Col xs={12} lg={4} className="mb-3">
                     <Form
                       label="Standby blink interval"
                       callback={setBlink}

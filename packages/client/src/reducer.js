@@ -3,6 +3,7 @@ import {
   SET_COLORS,
   SET_INFO,
   SET_PROCESSING,
+  SET_LENGTH_VALUE,
   SET_BLINK_VALUE,
   SET_TRANSITION_VALUE,
 } from "./actions.js";
@@ -25,6 +26,11 @@ export default (state, action) => {
       return {
         ...state,
         blink: action.value,
+      };
+    case SET_LENGTH_VALUE:
+      return {
+        ...state,
+        length: action.value,
       };
     case SET_PROCESSING:
       return {

@@ -27,7 +27,7 @@ const Form = (props) => {
     <Col xs={12}>
       <FormGroup className="d-flex justify-content-center align-items-center flex-column m-0">
         <Label>{label}</Label>
-        <InputGroup className="w-75">
+        <InputGroup className="w-100">
           <Input
             name="value"
             className="text-center"

@@ -2,5 +2,6 @@ export const SET_ACTIVE_COLOR = "SET_ACTIVE_COLOR";
 export const SET_COLORS = "SET_COLORS";
 export const SET_INFO = "SET_INFO";
 export const SET_PROCESSING = "SET_PROCESSING";
+export const SET_LENGTH_VALUE = "SET_LENGTH_VALUE";
 export const SET_BLINK_VALUE = "SET_BLINK_VALUE";
 export const SET_TRANSITION_VALUE = "SET_TRANSITION_VALUE";
