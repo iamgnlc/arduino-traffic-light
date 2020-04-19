@@ -1,27 +1,18 @@
 import {
-  SET_COLOR,
+  SET_ACTIVE_COLOR,
   SET_COLORS,
   SET_INFO,
-  SET_BLINK,
-  SET_TRANSITION,
+  SET_PROCESSING,
+  SET_BLINK_VALUE,
+  SET_TRANSITION_VALUE,
 } from "./actions.js";
 
 export default (state, action) => {
   switch (action.type) {
-    case SET_COLOR:
+    case SET_ACTIVE_COLOR:
       return {
         ...state,
         color: action.color,
-      };
-    case SET_BLINK:
-      return {
-        ...state,
-        blink: action.value,
-      };
-    case SET_TRANSITION:
-      return {
-        ...state,
-        transition: action.value,
       };
     case SET_COLORS:
       return {
@@ -29,6 +20,21 @@ export default (state, action) => {
         red: action.result.color === "red" ? "on" : "off",
         yellow: action.result.color === "yellow" ? "on" : "off",
         green: action.result.color === "green" ? "on" : "off",
+      };
+    case SET_BLINK_VALUE:
+      return {
+        ...state,
+        blink: action.value,
+      };
+    case SET_PROCESSING:
+      return {
+        ...state,
+        isProcessing: action.value,
+      };
+    case SET_TRANSITION_VALUE:
+      return {
+        ...state,
+        transition: action.value,
       };
     case SET_INFO:
       return {

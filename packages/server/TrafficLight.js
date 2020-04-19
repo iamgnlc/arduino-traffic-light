@@ -1,7 +1,7 @@
 const { Led } = require("johnny-five");
 
 class TrafficLight {
-  constructor(transition = 1000, blink = 450) {
+  constructor(transition = 1500, blink = 500) {
     this.transition = transition;
     this.blink = blink;
     this.actualState;
@@ -46,25 +46,34 @@ class TrafficLight {
 
   // Transition to red.
   red() {
-    this._onlyYellow();
-    setTimeout(() => {
-      this._onlyRed();
-      this.actualState = "red";
-    }, this.transition);
-  }
-  // Transition to blinking yellow.
-  yellow() {
-    this._blinkYellow();
-    this.actualState = "yellow";
+    return new Promise((resolve, reject) => {
+      this._onlyYellow();
+      setTimeout(() => {
+        this._onlyRed();
+        this.actualState = "red";
+        resolve();
+      }, this.transition);
+    });
   }
   // Transition to green.
   green() {
-    this.colors.red.on();
-    this.colors.yellow.stop().on();
-    setTimeout(() => {
-      this._onlyGreen();
-      this.actualState = "green";
-    }, this.transition);
+    return new Promise((resolve, reject) => {
+      this.colors.red.on();
+      this.colors.yellow.stop().on();
+      setTimeout(() => {
+        this._onlyGreen();
+        this.actualState = "green";
+        resolve();
+      }, this.transition);
+    });
+  }
+  // Transition to blinking yellow.
+  yellow() {
+    return new Promise((resolve, reject) => {
+      this._blinkYellow();
+      this.actualState = "yellow";
+      resolve();
+    });
   }
 
   // Lights off.

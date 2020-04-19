@@ -11,11 +11,12 @@ import {
 } from "reactstrap";
 
 import {
-  SET_COLOR,
+  SET_ACTIVE_COLOR,
   SET_COLORS,
   SET_INFO,
-  SET_BLINK,
-  SET_TRANSITION,
+  SET_PROCESSING,
+  SET_BLINK_VALUE,
+  SET_TRANSITION_VALUE,
 } from "./actions.js";
 import reducer from "./reducer.js";
 
@@ -51,28 +52,23 @@ const Control = () => {
   const setBlink = async (value) => {
     const url = baseUrl + "/set/blink/" + value;
     const result = await fetchUrl(url);
-    dispatch({ type: SET_BLINK, value: result.value });
+    dispatch({ type: SET_BLINK_VALUE, value: result.value });
   };
 
   const setTransition = async (value) => {
     const url = baseUrl + "/set/transition/" + value;
     const result = await fetchUrl(url);
-    dispatch({ type: SET_TRANSITION, value: result.value });
+    dispatch({ type: SET_TRANSITION_VALUE, value: result.value });
   };
 
   const setColor = async (color) => {
     const url = baseUrl + "/color/" + color;
+    dispatch({ type: SET_PROCESSING, value: true });
     const result = await fetchUrl(url);
-    dispatch({ type: SET_COLOR, [result.color]: "on" });
+    dispatch({ type: SET_PROCESSING, value: false });
+    dispatch({ type: SET_ACTIVE_COLOR, [result.color]: "on" });
     dispatch({ type: SET_COLORS, result });
   };
-
-  const init = useCallback(async () => {
-    const url = baseUrl + "/info";
-    const result = await fetchUrl(url);
-    dispatch({ type: SET_INFO, result });
-    dispatch({ type: SET_COLORS, result });
-  }, []);
 
   const getColor = () => {
     if (state.red === "on") return "red";
@@ -90,6 +86,13 @@ const Control = () => {
         return false;
     }
   };
+
+  const init = useCallback(async () => {
+    const url = baseUrl + "/info";
+    const result = await fetchUrl(url);
+    dispatch({ type: SET_INFO, result });
+    dispatch({ type: SET_COLORS, result });
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -125,10 +128,10 @@ const Control = () => {
                       size="lg"
                       onClick={() => setColor("red")}
                       color="danger"
-                      disabled={state.red === "on"}
+                      disabled={state.red === "on" || state.isProcessing}
                       outline={state.red === "on"}
                     >
-                      Red
+                      Stop
                     </Button>
                   </Col>
                   <Col xs={12} md={6} className="mb-3">
@@ -137,10 +140,10 @@ const Control = () => {
                       size="lg"
                       onClick={() => setColor("green")}
                       color="success"
-                      disabled={state.green === "on"}
+                      disabled={state.green === "on" || state.isProcessing}
                       outline={state.green === "on"}
                     >
-                      Green
+                      Go
                     </Button>
                   </Col>
                   <Col xs={12} md={{ size: 6, offset: 3 }} className="mb-3">
@@ -149,24 +152,24 @@ const Control = () => {
                       size="lg"
                       onClick={() => setColor("yellow")}
                       color="warning"
-                      disabled={state.yellow === "on"}
+                      disabled={state.yellow === "on" || state.isProcessing}
                       outline={state.yellow === "on"}
                     >
-                      Yellow
+                      Standby
                     </Button>
                   </Col>
                   <Col xs={12} lg={6} className="mb-3">
                     <Form
-                      label="Blink interval"
-                      callback={setBlink}
-                      value={Number(state.blink)}
+                      label="Stop/Go transition"
+                      callback={setTransition}
+                      value={Number(state.transition)}
                     />
                   </Col>
                   <Col xs={12} lg={6} className="mb-3">
                     <Form
-                      label="Transition"
-                      callback={setTransition}
-                      value={Number(state.transition)}
+                      label="Standby blink interval"
+                      callback={setBlink}
+                      value={Number(state.blink)}
                     />
                   </Col>
                 </Suspense>

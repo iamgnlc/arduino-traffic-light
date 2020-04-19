@@ -44,15 +44,16 @@ board.on("ready", () => {
   });
 
   // Color.
-  app.get("/color/:color", (req, res) => {
+  app.get("/color/:color", async (req, res) => {
     const { color } = req.params;
 
+    if (trafficLight.actualState === "transition") return false;
     // Color already active, no change.
-    if (trafficLight.actualState === color)
+    else if (trafficLight.actualState === color)
       response = { color, code: 200, message: "No change" };
     // Change color.
     else if (color && Object.keys(trafficLight.colors).includes(color)) {
-      trafficLight[color]();
+      await trafficLight[color]();
       response = { color, code: 200, message: "Success" };
     }
     // Not allowed.
