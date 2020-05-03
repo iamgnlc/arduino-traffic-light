@@ -1,4 +1,10 @@
-import React, { Suspense, useReducer, useEffect, useCallback } from "react";
+import React, {
+  Suspense,
+  useReducer,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import {
   Button,
   Card,
@@ -6,6 +12,7 @@ import {
   CardFooter,
   CardBody,
   Container,
+  Collapse,
   Row,
   Col,
 } from "reactstrap";
@@ -14,6 +21,7 @@ import {
   SET_ACTIVE_COLOR,
   SET_COLORS,
   SET_INFO,
+  SET_BASE_URL,
   SET_PROCESSING,
   SET_LENGTH_VALUE,
   SET_BLINK_VALUE,
@@ -21,10 +29,13 @@ import {
 } from "./actions.js";
 import reducer from "./reducer.js";
 
+import { BsGear } from "react-icons/bs";
+
 import Loading from "./components/Loading";
 const Form = React.lazy(() => import("./components/Form"));
 
 const initialState = {
+  baseUrl: process.env.REACT_APP_SERVER_URL,
   red: "off",
   yellow: "off",
   green: "off",
@@ -33,7 +44,7 @@ const initialState = {
   length: 5000,
 };
 
-const baseUrl = process.env.REACT_APP_SERVER_URL;
+// const state.baseUrl = process.env.REACT_APP_SERVER_URL;
 
 const fetchUrl = (url) => {
   return fetch(url)
@@ -50,25 +61,32 @@ const fetchUrl = (url) => {
 
 const Control = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   const setLength = (value) => {
     dispatch({ type: SET_LENGTH_VALUE, value });
   };
 
   const setBlink = async (value) => {
-    const url = baseUrl + "/set/blink/" + value;
+    const url = state.baseUrl + "/set/blink/" + value;
     const result = await fetchUrl(url);
     dispatch({ type: SET_BLINK_VALUE, value: result.value });
   };
 
   const setTransition = async (value) => {
-    const url = baseUrl + "/set/transition/" + value;
+    const url = state.baseUrl + "/set/transition/" + value;
     const result = await fetchUrl(url);
     dispatch({ type: SET_TRANSITION_VALUE, value: result.value });
   };
 
+  const setBaseUrl = async (value) => {
+    dispatch({ type: SET_BASE_URL, value });
+  };
+
   const setColor = async (color) => {
-    const url = baseUrl + "/color/" + color;
+    const url = state.baseUrl + "/color/" + color;
     dispatch({ type: SET_PROCESSING, value: true });
     const result = await fetchUrl(url);
     dispatch({ type: SET_PROCESSING, value: false });
@@ -82,7 +100,7 @@ const Control = () => {
     if (state.green === "on") return "green";
   };
 
-  const toggle = () => {
+  const toggleColor = () => {
     switch (getColor()) {
       case "red":
         return setColor("green");
@@ -94,15 +112,15 @@ const Control = () => {
   };
 
   const init = useCallback(async () => {
-    const url = baseUrl + "/info";
+    const url = state.baseUrl + "/info";
     const result = await fetchUrl(url);
     dispatch({ type: SET_COLORS, result });
     dispatch({ type: SET_INFO, result });
-  }, []);
+  }, [state.baseUrl]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      toggle();
+      toggleColor();
     }, state.length);
     return () => clearInterval(interval);
   });
@@ -120,14 +138,14 @@ const Control = () => {
               <h4 className="m-0 text-center">Arduino Traffic Light Control</h4>
             </CardHeader>
             <CardBody>
-              <Row>
-                <Suspense
-                  fallback={
-                    <Col>
-                      <Loading />
-                    </Col>
-                  }
-                >
+              <Suspense
+                fallback={
+                  <Col>
+                    <Loading />
+                  </Col>
+                }
+              >
+                <Row>
                   <Col xs={12} md={6} className="mb-3">
                     <Button
                       block
@@ -164,29 +182,51 @@ const Control = () => {
                       Standby
                     </Button>
                   </Col>
-                  <Col xs={12} lg={4} className="mb-3">
-                    <Form
-                      label="Stop/Go length"
-                      callback={setLength}
-                      value={Number(state.length)}
-                    />
+                </Row>
+                <Row>
+                  <Col xs={12} className="text-center">
+                    <Button color="link" onClick={toggle}>
+                      Config <BsGear />
+                    </Button>
                   </Col>
-                  <Col xs={12} lg={4} className="mb-3">
-                    <Form
-                      label="Yellow transition"
-                      callback={setTransition}
-                      value={Number(state.transition)}
-                    />
-                  </Col>
-                  <Col xs={12} lg={4} className="mb-3">
-                    <Form
-                      label="Standby blink interval"
-                      callback={setBlink}
-                      value={Number(state.blink)}
-                    />
-                  </Col>
-                </Suspense>
-              </Row>
+                </Row>
+                <Collapse isOpen={isOpen}>
+                  <hr />
+                  <Row>
+                    <Col xs={12} md={6} lg={4} className="mb-3">
+                      <Form
+                        label="Server URL"
+                        callback={setBaseUrl}
+                        value={state.baseUrl}
+                      />
+                    </Col>
+                    <Col xs={12} md={6} lg={4} className="mb-3">
+                      <Form
+                        label="Stop/Go length"
+                        callback={setLength}
+                        value={Number(state.length)}
+                        addOn="ms"
+                      />
+                    </Col>
+                    <Col xs={12} md={6} lg={4} className="mb-3">
+                      <Form
+                        label="Yellow transition"
+                        callback={setTransition}
+                        value={Number(state.transition)}
+                        addOn="ms"
+                      />
+                    </Col>
+                    <Col xs={12} md={6} lg={4} className="mb-3">
+                      <Form
+                        label="Standby blink interval"
+                        callback={setBlink}
+                        value={Number(state.blink)}
+                        addOn="ms"
+                      />
+                    </Col>
+                  </Row>
+                </Collapse>
+              </Suspense>
             </CardBody>
             <CardFooter>
               <h6 className="m-0 text-muted text-center">&copy; GNLC</h6>

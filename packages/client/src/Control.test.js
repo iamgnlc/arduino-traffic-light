@@ -4,6 +4,6 @@ import Control from "./Control";
 
 test("renders heading", () => {
   const { getByText } = render(<Control />);
-  const linkElement = getByText(/Arduino Traffic Light Control/i);
-  expect(linkElement).toBeInTheDocument();
+  const heading = getByText(/Arduino Traffic Light Control/i);
+  expect(heading).toBeInTheDocument();
 });

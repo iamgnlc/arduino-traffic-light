@@ -2,6 +2,7 @@ import {
   SET_ACTIVE_COLOR,
   SET_COLORS,
   SET_INFO,
+  SET_BASE_URL,
   SET_PROCESSING,
   SET_LENGTH_VALUE,
   SET_BLINK_VALUE,
@@ -25,7 +26,12 @@ export default (state, action) => {
     case SET_BLINK_VALUE:
       return {
         ...state,
-        blink: action.value,
+        serverUrl: action.serverUrl,
+      };
+    case SET_BASE_URL:
+      return {
+        ...state,
+        baseUrl: action.value,
       };
     case SET_LENGTH_VALUE:
       return {
