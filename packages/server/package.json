@@ -1,8 +1,6 @@
 {
-  "name": "arduino-leds-server",
-  "version": "1.0.0",
+  "name": "server",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
     "start": "nodemon index.js"
   },

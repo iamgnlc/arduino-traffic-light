@@ -1,10 +1,14 @@
-# Arduino Traffic Ligh Control
+# Arduino Traffic Light
 
-Arduino client-server interaction in javascript.
+![version](https://img.shields.io/github/package-json/v/iamgnlc/arduino-traffic-light)
+![license](https://img.shields.io/badge/dynamic/json?color=darkgrey&label=license&query=license&url=https%3A%2F%2Fraw.githubusercontent.com%2Fiamgnlc%2Farduino-traffic-light%2Fmaster%2Fpackage.json)
+![last commit](https://img.shields.io/github/last-commit/iamgnlc/arduino-traffic-light)
+
+Arduino client-server app interaction in javascript.
 
 ## Install dependencies
 
-```
+```sh
 $ yarn install
 ```
 
@@ -12,7 +16,7 @@ $ yarn install
 
 Start both client and server:
 
-```
+```sh
 $ yarn start
 ```
 
@@ -40,3 +44,7 @@ The client will automatically send requests to the server at customizable interv
 
 - **Gianluca Agnocchetti** - _Client, Server_ -
   [iamgnlc](https://github.com/iamgnlc)
+
+---
+
+![author](https://img.shields.io/badge/author-iamgnlc-blueviolet)

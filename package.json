@@ -1,7 +1,10 @@
 {
-  "name": "arduino-leds-server",
+  "name": "arduino-traffic-light",
   "version": "1.0.0",
-  "main": "index.js",
+  "author": {
+    "name": "GNLC",
+    "url": "https://github.com/iamgnlc"
+  },
   "license": "MIT",
   "scripts": {
     "start": "concurrently \"cd packages/server && yarn start\" \"cd packages/client && yarn start\""
