@@ -1,6 +1,7 @@
 {
   "name": "arduino-traffic-light-server",
   "version": "1.0.0",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
