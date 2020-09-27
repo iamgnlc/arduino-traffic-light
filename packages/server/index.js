@@ -33,10 +33,10 @@ board.on("ready", () => {
   // Info.
   app.get("/info", (req, res) => {
     response = {
+      code: 200,
       color: trafficLight.actualState,
       transition: trafficLight.transition,
       blink: trafficLight.blink,
-      code: 200,
       message: "Success",
     };
     res.status(response.code).json(response);
@@ -62,14 +62,14 @@ board.on("ready", () => {
   });
 
   // Set.
-  app.get("/set/:what/:value", (req, res) => {
-    const { what, value = 100 } = req.params;
+  app.get("/set/:type/:value", (req, res) => {
+    const { type, value = 100 } = req.params;
 
     // Set value.
-    if (allowedSet.includes(what.toLocaleLowerCase()) && parseInt(value)) {
-      func = "set" + what.charAt(0).toUpperCase() + what.slice(1);
+    if (allowedSet.includes(type.toLocaleLowerCase()) && parseInt(value)) {
+      func = "set" + type.charAt(0).toUpperCase() + type.slice(1);
       trafficLight[func](parseInt(value));
-      response = { set: what, value: value, code: 200, message: "Success" };
+      response = { set: type, value: value, code: 200, message: "Success" };
     }
     // Not allowed.
     else response = { code: 405, message: "Not Allowed" };

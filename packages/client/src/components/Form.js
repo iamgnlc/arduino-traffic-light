@@ -10,7 +10,7 @@ import {
   InputGroupText,
 } from "reactstrap";
 
-const min = 100;
+import { FORM_MIN_VALUE } from "../config";
 
 const Form = (props) => {
   const { label, value, callback, addOn } = props;
@@ -18,7 +18,7 @@ const Form = (props) => {
   let [valueState, setValueState] = useState(value);
 
   const setValue = () => {
-    valueState = valueState < 100 ? 100 : valueState;
+    valueState = valueState < FORM_MIN_VALUE ? FORM_MIN_VALUE : valueState;
     callback(valueState);
   };
 
@@ -31,9 +31,9 @@ const Form = (props) => {
         <Input
           name="value"
           className="text-center"
-          value={valueState || min}
+          value={valueState || FORM_MIN_VALUE}
           type={type}
-          min={min}
+          min={FORM_MIN_VALUE}
           onChange={(e) => setValueState(e.target.value)}
         />
         {addOn && (
