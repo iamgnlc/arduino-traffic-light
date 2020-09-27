@@ -5,7 +5,6 @@
     "name": "GNLC",
     "url": "https://github.com/iamgnlc"
   },
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
     "start": "concurrently \"cd packages/server && yarn start\" \"cd packages/client && yarn start\""
